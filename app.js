@@ -36,50 +36,34 @@ function decodeCayennePayload(payload_hex,timestamp) {
   var end = payload_hex.length;
 
   do {
-    var tempchannel = payload_hex.substring(0, 2);
-    var tempdataType = payload_hex.substring(2, 4);
+    // var tempchannel = payload_hex.substring(0, 2);
+    var tempdataType = payload_hex.substring(0, 2);
     // var tempdata = payload_hex.substring(4,8);
 
-    var humchannel = payload_hex.substring(8, 10);
-    var humdataType = payload_hex.substring(10, 12);
+    // var humchannel = payload_hex.substring(8, 10);
+    var humdataType = payload_hex.substring(6, 8);
     // var humdata = payload_hex.substring(12,16);
 
-    var personchannel = payload_hex.substring(16, 18);
+    // var personchannel = payload_hex.substring(16, 18);
     // var persondataType = payload_hex.substring(18, 20);
-    var persondata = payload_hex.substring(18,20);
+    // var persondata = payload_hex.substring(18,20);
 // proximity dataType A
 
     if (tempdataType == "67") {
-      var tempvalue = payload_hex.substring(4, 8);
-      var tempdec = hexToInt(tempvalue) * 0.1;
+      var tempvalue = payload_hex.substring(2, 6);
+      var tempdec = hexToInt(tempvalue);
       console.log('Temperature Sensor dec : ' + tempdec);
 
-      start = 8;
+      start = 6;
       if (humdataType == "68") {
-        var humvalue = payload_hex.substring(12, 16);
+        var humvalue = payload_hex.substring(8, 10);
         var humdec = hexToInt(humvalue) * 0.5;
         console.log('Humidity Sensor dec : ' + humdec);
 
         start = 16;
 
-        if (end > "16") {
-          if (personchannel == "02") {
-            var pIN = payload_hex.substring(18, 20);
-            console.log('pIN dec : ' + pIN);
-            var pOUT = 0;
-
-            start = 20;
-          } else if (personchannel == "03") {
-            var pOUT = payload_hex.substring(18, 20);
-            console.log('pOUT dec : ' + pOUT);
-            var pIN = 0;
-
-            start = 20;
-          }
-        } else if (end <= "16") {
-          var pIN = 0;
-          var pOUT = 0;
-        }
+        var pIN = 0;
+        var pOUT = 0;
       }
     } else {
       console.log("Error");
